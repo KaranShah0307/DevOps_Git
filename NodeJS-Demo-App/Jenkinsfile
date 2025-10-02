@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/blessador/simple-nodejs-app.git'
+                git branch: 'firstbranch', url: 'https://github.com/KaranShah0307/NodeJS-Demo-App.git'
             }
         }
 
