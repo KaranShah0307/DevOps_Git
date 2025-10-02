@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        nodejs 'NodeJS 24' // Use the NodeJS configuration from Jenkins
+        nodejs 'NodeJS 24'
     }
 
     environment {
@@ -18,43 +18,33 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                script {
-                    powershell 'npm install'
-                }
+                bat 'npm install'
             }
         }
 
         stage('Run Tests') {
             steps {
-                script {
-                    powershell 'npm test'
-                }
+                bat 'npm test'
             }
         }
 
         stage('Build') {
             steps {
-                script {
-                    powershell 'npm run build'
-                }
+                bat 'npm run build'
             }
         }
 
         stage('Deploy') {
             steps {
                 script {
-                    // Deploy script or commands can be added here
-                    powershell 'Write-Host "Deploying the application..."'
-                    //powershell 'npm start'
-                    //powershell 'node server.js'
-                    powershell 'Start-Process -NoNewWindow node server.js'
+                    bat 'echo Deploying the application...'
+                    bat 'start /B node server.js'
                     sleep 30
-                    powershell 'Stop-Process -Name node -Force'
+                    bat 'taskkill /F /IM node.exe'
                 }
             }
         }
-        
-    } // end of Stages
+    }
 
     post {
         always {
