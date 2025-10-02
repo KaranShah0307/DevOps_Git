@@ -18,25 +18,19 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                script {
-                    bat 'npm install'
-                }
+                powershell 'npm install'
             }
         }
 
         stage('Run Tests') {
             steps {
-                script {
-                    bat 'npm test'
-                }
+                powershell 'npm test'
             }
         }
 
         stage('Build') {
             steps {
-                script {
-                    bat 'npm run build'
-                }
+                powershell 'npm run build'
             }
         }
 
@@ -44,17 +38,18 @@ pipeline {
             steps {
                 script {
                     // Deploy script or commands can be added here
-                    bat 'echo Deploying the application...'
-                    //bat 'npm start'
-                    //bat 'node server.js'
-                    bat 'start /B node server.js'
+                    powershell 'Write-Host "Deploying the application..."'
+                    
+                    // Start the Node.js server in background
+                    powershell 'Start-Process -NoNewWindow -FilePath "node" -ArgumentList "server.js"'
+                    
                     sleep 30
-                    bat 'taskkill /F /IM node.exe'
+                    
+                    // Stop the Node.js processes
+                    powershell 'Stop-Process -Name "node" -Force -ErrorAction SilentlyContinue'
                 }
             }
         }
-        
-       
     } // end of Stages
 
     post {
